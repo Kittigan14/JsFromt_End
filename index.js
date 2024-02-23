@@ -21,6 +21,7 @@ app.get('/', async (req, res) => {
         console.log("Get Books");
     } catch (err) {
         console.error(err);
+        console.error("Error response:", err.response); // Log the entire response
         if (err.response && err.response.status === 503) {
             // Service Unavailable
             res.render("error", { message: "Service is temporarily unavailable. Please try again later." });
@@ -30,6 +31,7 @@ app.get('/', async (req, res) => {
         }
     }
 });
+
 
 app.get('/book/:id', async(req, res) => {
     try {
