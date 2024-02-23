@@ -1,13 +1,12 @@
 const express = require('express')
 const axios = require('axios')
-const cors = require('cors');
-const app = express();
+const app = express()
 var bodyParser = require('body-parser')
 const path = require("path")
 
-const base_url = "http://node59006-env-4702943.proen.app.ruk-com.cloud";
+const base_url = "node59006-env-4702943.proen.app.ruk-com.cloud"
+// const base_url = "http://localhost:3000";
 
-app.use(cors());
 app.set("views", path.join(__dirname, "/public/views"))
 app.set('view engine', 'ejs')
 app.use(bodyParser.json())
@@ -16,24 +15,16 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(express.static(__dirname + '/public'))
 
-app.get('/', async (req, res) => {
+app.get('/', async(req, res) => {
     try {
-        const response = await axios.get(base_url + '/books');
-        res.render("books", { books: response.data });
-        console.log("Get Books");
+        const respones = await axios.get(base_url + '/books')
+        res.render("books", { books: respones.data })
+        console.log("Get Books")
     } catch (err) {
-        console.error(err);
-        console.error("Error response:", err.response); // Log the entire response
-        if (err.response && err.response.status === 503) {
-            // Service Unavailable
-            res.render("error", { message: "Service is temporarily unavailable. Please try again later." });
-        } else {
-            // Other errors
-            res.render("error", { message: "An error occurred. Please try again." });
-        }
+        console.error(err)
+        res.status(500).send('Error')
     }
-});
-
+})
 
 app.get('/book/:id', async(req, res) => {
     try {
