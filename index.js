@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(express.static(__dirname + '/public'))
 
-app.get('/', async(req, res) => {
+app.get('/', async (req, res) => {
     try {
         const response = await axios.get(base_url + '/books');
         res.render("books", { books: response.data });
@@ -23,13 +23,14 @@ app.get('/', async(req, res) => {
     } catch (err) {
         console.error(err);
         if (err.response && err.response.status === 503) {
-            res.status(503).send('Service Unavailable');
+            // Service Unavailable
+            res.render("error", { message: "Service is temporarily unavailable. Please try again later." });
         } else {
-            res.status(500).send('Error');
+            // Other errors
+            res.render("error", { message: "An error occurred. Please try again." });
         }
     }
 });
-
 
 app.get('/book/:id', async(req, res) => {
     try {
