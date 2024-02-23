@@ -1,11 +1,13 @@
 const express = require('express')
 const axios = require('axios')
-const app = express()
+const cors = require('cors');
+const app = express();
 var bodyParser = require('body-parser')
 const path = require("path")
 
 const base_url = "http://node59006-env-4702943.proen.app.ruk-com.cloud";
 
+app.use(cors());
 app.set("views", path.join(__dirname, "/public/views"))
 app.set('view engine', 'ejs')
 app.use(bodyParser.json())
