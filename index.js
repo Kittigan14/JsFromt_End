@@ -17,14 +17,19 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', async(req, res) => {
     try {
-        const respones = await axios.get(base_url + '/books')
-        res.render("books", { books: respones.data })
-        console.log("Get Books")
+        const response = await axios.get(base_url + '/books');
+        res.render("books", { books: response.data });
+        console.log("Get Books");
     } catch (err) {
-        console.error(err)
-        res.status(500).send('Error')
+        console.error(err);
+        if (err.response && err.response.status === 503) {
+            res.status(503).send('Service Unavailable');
+        } else {
+            res.status(500).send('Error');
+        }
     }
-})
+});
+
 
 app.get('/book/:id', async(req, res) => {
     try {
